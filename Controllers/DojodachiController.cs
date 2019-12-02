@@ -22,13 +22,11 @@ namespace dojodachi.Controllers
             }
             ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
             ViewBag.Message = "";
-            return View("Index", petname);
+            return View("Index");
         }
         
         Random rand = new Random();
         
-        //feed
-        // [HttpGet("dojodachi")]
         public IActionResult Feed()
         {
             
@@ -47,7 +45,7 @@ namespace dojodachi.Controllers
                 else
                 {
                     ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
-                    HttpContext.Session.SetString("Message", "Not enough meals to feed the dojodachi");
+                    HttpContext.Session.SetString("Message", "Not enough meals to feed the dojodachi, go earn more!");
                     ViewBag.Message = HttpContext.Session.GetString("Message");
                 }
             }
@@ -64,14 +62,13 @@ namespace dojodachi.Controllers
                 else
                 {
                     ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
-                    HttpContext.Session.SetString("Message", "Not enough meals to feed the dojodachi");
+                    HttpContext.Session.SetString("Message", "Not enough meals to feed the dojodachi, go earn more!");
                     ViewBag.Message = HttpContext.Session.GetString("Message");
                 }
             }
             return View("Index");
         }
 
-        //play 
         public IActionResult Play()
         {
             
@@ -79,7 +76,7 @@ namespace dojodachi.Controllers
             {
                 HttpContext.Session.SetObjectAsJson("petname", petname);
                 DojodachiModel petTemp = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
-                // if(petTemp.meals > 0)
+                if(petTemp.energy > 0)
                 {
                     petTemp.energy -= 5;
                     petTemp.happiness += rand.Next(5, 11);
@@ -90,24 +87,113 @@ namespace dojodachi.Controllers
                 else
                 {
                     ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
-                    HttpContext.Session.SetString("Message", "Not enough meals to feed the dojodachi");
+                    HttpContext.Session.SetString("Message", "No more energy to play. Get some rest!");
                     ViewBag.Message = HttpContext.Session.GetString("Message");
                 }
             }
             else 
             {
                 DojodachiModel petTemp = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
-                if(petTemp.meals > 0)
+                if(petTemp.energy > 0)
                 {
-                    petTemp.meals -= 1;
-                    petTemp.fullness += rand.Next(5, 11);
+                    petTemp.energy -= 5;
+                    petTemp.happiness += rand.Next(5, 11);
                     HttpContext.Session.SetObjectAsJson("petname", petTemp);
                     ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
+                    return RedirectToAction("Index", petTemp);
                 }
                 else
                 {
                     ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
-                    HttpContext.Session.SetString("Message", "Not enough meals to feed the dojodachi");
+                    HttpContext.Session.SetString("Message", "No more energy to play. Get some rest!");
+                    ViewBag.Message = HttpContext.Session.GetString("Message");
+                }
+            }
+            return View("Index");
+        }
+
+        public IActionResult Work()
+        {
+            
+            if(HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname")==null)
+            {
+                HttpContext.Session.SetObjectAsJson("petname", petname);
+                DojodachiModel petTemp = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
+                if(petTemp.energy > 0)
+                {
+                    petTemp.energy -= 5;
+                    petTemp.meals += rand.Next(1, 4);
+                    HttpContext.Session.SetObjectAsJson("petname", petTemp);
+                    ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
+                    return RedirectToAction("Index", petTemp);
+                }
+                else
+                {
+                    ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
+                    HttpContext.Session.SetString("Message", "No more energy to work. Get some rest!");
+                    ViewBag.Message = HttpContext.Session.GetString("Message");
+                }
+            }
+            else 
+            {
+                DojodachiModel petTemp = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
+                if(petTemp.energy > 0)
+                {
+                    petTemp.energy -= 5;
+                    petTemp.meals += rand.Next(1, 4);
+                    HttpContext.Session.SetObjectAsJson("petname", petTemp);
+                    ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
+                    return RedirectToAction("Index", petTemp);
+                }
+                else
+                {
+                    ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
+                    HttpContext.Session.SetString("Message", "No more energy to work. Get some rest!");
+                    ViewBag.Message = HttpContext.Session.GetString("Message");
+                }
+            }
+            return View("Index");
+        }
+
+        public IActionResult Sleep()
+        {
+            
+            if(HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname")==null)
+            {
+                HttpContext.Session.SetObjectAsJson("petname", petname);
+                DojodachiModel petTemp = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
+                if(petTemp.fullness > 0 && petTemp.happiness > 0)
+                {
+                    petTemp.energy += 15;
+                    petTemp.fullness -= 5;
+                    petTemp.happiness -=5;
+                    HttpContext.Session.SetObjectAsJson("petname", petTemp);
+                    ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
+                    return RedirectToAction("Index", petTemp);
+                }
+                else
+                {
+                    ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
+                    HttpContext.Session.SetString("Message", "Dojodachi getting too much sleep. Get moving!");
+                    ViewBag.Message = HttpContext.Session.GetString("Message");
+                }
+            }
+            else 
+            {
+                DojodachiModel petTemp = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
+                if(petTemp.fullness > 0 && petTemp.happiness > 0)
+                {
+                    petTemp.energy += 15;
+                    petTemp.fullness -= 5;
+                    petTemp.happiness -=5;
+                    HttpContext.Session.SetObjectAsJson("petname", petTemp);
+                    ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
+                    return RedirectToAction("Index", petTemp);
+                }
+                else
+                {
+                    ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
+                    HttpContext.Session.SetString("Message", "Dojodachi getting too much sleep. Get moving!");
                     ViewBag.Message = HttpContext.Session.GetString("Message");
                 }
             }
