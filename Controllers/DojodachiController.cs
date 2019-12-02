@@ -19,6 +19,11 @@ namespace dojodachi.Controllers
             if(HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname")==null)
             {
                 HttpContext.Session.SetObjectAsJson("petname", petname);
+                if(petname.fullness < 0 || petname.happiness < 0)
+                {
+                    HttpContext.Session.SetString("Message", "Dojodachi dies :(");
+                    ViewBag.Message = HttpContext.Session.GetString("Message");
+                }
             }
             ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
             ViewBag.Message = "";
@@ -40,7 +45,6 @@ namespace dojodachi.Controllers
                     petTemp.fullness += rand.Next(5, 11);
                     HttpContext.Session.SetObjectAsJson("petname", petTemp);
                     ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
-                    return RedirectToAction("Index", petTemp);
                 }
                 else
                 {
@@ -82,7 +86,6 @@ namespace dojodachi.Controllers
                     petTemp.happiness += rand.Next(5, 11);
                     HttpContext.Session.SetObjectAsJson("petname", petTemp);
                     ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
-                    return RedirectToAction("Index", petTemp);
                 }
                 else
                 {
@@ -100,7 +103,6 @@ namespace dojodachi.Controllers
                     petTemp.happiness += rand.Next(5, 11);
                     HttpContext.Session.SetObjectAsJson("petname", petTemp);
                     ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
-                    return RedirectToAction("Index", petTemp);
                 }
                 else
                 {
@@ -125,7 +127,6 @@ namespace dojodachi.Controllers
                     petTemp.meals += rand.Next(1, 4);
                     HttpContext.Session.SetObjectAsJson("petname", petTemp);
                     ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
-                    return RedirectToAction("Index", petTemp);
                 }
                 else
                 {
@@ -143,7 +144,6 @@ namespace dojodachi.Controllers
                     petTemp.meals += rand.Next(1, 4);
                     HttpContext.Session.SetObjectAsJson("petname", petTemp);
                     ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
-                    return RedirectToAction("Index", petTemp);
                 }
                 else
                 {
@@ -169,7 +169,6 @@ namespace dojodachi.Controllers
                     petTemp.happiness -=5;
                     HttpContext.Session.SetObjectAsJson("petname", petTemp);
                     ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
-                    return RedirectToAction("Index", petTemp);
                 }
                 else
                 {
@@ -188,7 +187,6 @@ namespace dojodachi.Controllers
                     petTemp.happiness -=5;
                     HttpContext.Session.SetObjectAsJson("petname", petTemp);
                     ViewBag.pet = HttpContext.Session.GetObjectFromJson<DojodachiModel>("petname");
-                    return RedirectToAction("Index", petTemp);
                 }
                 else
                 {
