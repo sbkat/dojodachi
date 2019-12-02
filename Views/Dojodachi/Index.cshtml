@@ -1,0 +1,22 @@
+@{
+    ViewData["Title"] = "Dojodachi";
+}
+
+<div class="text-center">
+    <p class="lead" style="display:inline-block">Fullness: @ViewBag.pet.fullness</p>
+    <p class="lead" style="display:inline-block">Happiness: @ViewBag.pet.happiness</p>
+    <p class="lead" style="display:inline-block">Meals: @ViewBag.pet.meals</p>
+    <p class="lead" style="display:inline-block">Energy: @ViewBag.pet.energy</p>
+    
+    <div style="border: 1px solid black; width: 70vw; height: 50vh; margin-left: 80px; margin-bottom: 20px;">
+        @ViewBag.Message
+    </div>
+
+    <div>
+        <partial name="Feed" /> |
+        <partial name="Work" /> |
+        <partial name="Sleep" /> | 
+        <partial name="Play" />
+    </div>
+
+</div>
